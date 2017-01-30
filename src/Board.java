@@ -216,4 +216,49 @@ public boolean fetchStatus(int ship){
 	}
 	return false;
 }
+
+/**
+ * getter for game status just in case
+ @return {int[][]} gameStatus - 2d array of the board with ship status, i.e. cheat view.
+ */
+public int[][] getGameStatus() {
+	return gameStatus;
+}
+/**
+ * setter for game status just in case
+ * @param {int[][]} gameStatus - 2d array of the board with ship status, i.e. cheat view.
+ */
+public void setGameStatus(int[][] gameStatus) {
+	this.gameStatus = gameStatus;
+}
+/**
+ * getter for player view just in case
+ * @return {char[][]} gameOutput - 2d array of the board from player view, i.e. normal view.
+ */
+public char[][] getGameOutput() {
+	return gameOutput;
+}
+
+/**
+ * setter for player view just in case
+ * @param {char[][]} gameOutput - 2d array of the board from player view, i.e. normal view.
+ */
+public void setGameOutput(char[][] gameOutput) {
+	this.gameOutput = gameOutput;
+}
+/**
+ * checking if another board is equal
+ * @param {Object} obj - the other object to test equality with
+ * @return {boolean} returns whether or not the two objects are equal.
+ */
+public boolean equals(Object obj) {
+	if (this == obj)
+		return true;
+	if (obj == null)
+		return false;
+	if (getClass() != obj.getClass())
+		return false;
+	return false;
+}
+
 }
