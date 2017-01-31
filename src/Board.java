@@ -9,7 +9,6 @@
 
 import java.util.Scanner;
 
-
 /**
  * On notation:
  * In the gameStatus[][] array 0 is an empty space, 1 is a player ship, 2 is a player grenade,
@@ -149,6 +148,7 @@ public String viewGameState(){
    @return {int[]} val - the coordinates that the user has chosen
  */
 public int[] getUserCoord(){
+	// default value to prevent errors
 	int x = 99;
 	int y = 99;
 	while(true) {
@@ -217,13 +217,15 @@ public boolean fetchStatus(int ship){
 	return false;
 }
 
+
 /**
- * getter for game status just in case
- @return {int[][]} gameStatus - 2d array of the board with ship status, i.e. cheat view.
+ * setter for player view just in case
+ * @param {char[][]} gameOutput - 2d array of the board from player view, i.e. normal view.
  */
-public int[][] getGameStatus() {
-	return gameStatus;
+public void setGameOutput(char[][] gameOutput) {
+	this.gameOutput = gameOutput;
 }
+
 /**
  * setter for game status just in case
  * @param {int[][]} gameStatus - 2d array of the board with ship status, i.e. cheat view.
@@ -236,16 +238,103 @@ public void setGameStatus(int[][] gameStatus) {
  * @return {char[][]} gameOutput - 2d array of the board from player view, i.e. normal view.
  */
 public char[][] getGameOutput() {
-	return gameOutput;
+	char[][] ret = new char[8][8];
+	int[] coord = new int[2];
+	for(coord[0]= 0; coord[0] < gameOutput.length;coord[0]++){
+		for(coord[1]= 0; coord[1] < gameOutput.length;coord[1]++){
+			ret[coord[0]][coord[1]] = getGameOutputCell(coord);
+		}
+	}
 }
 
 /**
- * setter for player view just in case
- * @param {char[][]} gameOutput - 2d array of the board from player view, i.e. normal view.
+ * getter for game status just in case
+   @return {int[][]} gameStatus - 2d array of the board with ship status, i.e. cheat view.
  */
-public void setGameOutput(char[][] gameOutput) {
-	this.gameOutput = gameOutput;
+public int[][] getGameStatus() {
+	int[][] ret = new int[8][8];
+	int[] coord = new int[2];
+	for(coord[0]= 0; coord[0] < gameOutput.length;coord[0]++){
+		for(coord[1]= 0; coord[1] < gameOutput.length;coord[1]++){
+			ret[coord[0]][coord[1]] = getGameStatusCell(coord);
+		}
+	}
 }
+
+public char getGameOutputCell(int[] coord){
+	if (coord.length() == 2) {
+		//Make sure first char is a letter within bounds.
+		// Make sure second char is a number within bounds.
+		if (coord[0] > 47 && coord[0]< 56 && coord[1] > 47 && coord[1]< 56) {
+			return gameOutput[coord[0]][coord[1]];
+		}
+	}
+	else{
+		System.out.println("Invalid, your coordinate is out of bounds!");
+	}
+	else{
+		System.out.println("Invalid, Your coordinate is of invalid size!");
+	}
+}
+
+public void setGameOutputCell(int[] coord, char newState){
+	if (coord.length() == 2) {
+		//Make sure first char is a letter within bounds.
+		// Make sure second char is a number within bounds.
+		if (coord[0] > 47 && coord[0]< 56 && coord[1] > 47 && coord[1]< 56) {
+			for(char state : shipDisplay) {
+				if(newState == state) {
+					gameOutput[coord[0]][coord[1]] == newState;
+					System.out.println("OK");
+				}
+			}
+		}
+		else{
+			System.out.println("Invalid, your coordinate is out of bounds!");
+		}
+	}
+	else{
+		System.out.println("Invalid, Your coordinate is of invalid size!");
+	}
+}
+
+public int getGameStatusCell(int[] coord){
+	if (coord.length() == 2) {
+		//Make sure first char is a letter within bounds.
+		// Make sure second char is a number within bounds.
+		if (coord[0] > 47 && coord[0]< 56 && coord[1] > 47 && coord[1]< 56) {
+			return gameStatus[coord[0]][coord[1]];
+		}
+	}
+	else{
+		System.out.println("Invalid, your coordinate is out of bounds!");
+	}
+	else{
+		System.out.println("Invalid, Your coordinate is of invalid size!");
+	}
+}
+
+
+public void setGameStatusCell(int[] coord, int newStatus){
+	if (coord.length() == 2) {
+		//Make sure first char is a letter within bounds.
+		// Make sure second char is a number within bounds.
+		if (coord[0] > 47 && coord[0]< 56 && coord[1] > 47 && coord[1]< 56) {
+			if(newStatus < 6 && newStatus > -1) {
+				gameStatus[coord[0]][coord[1]] == newStatus;
+				System.out.println("OK");
+			}
+		}
+	}
+	else{
+		System.out.println("Invalid, your coordinate is out of bounds!");
+	}
+	else{
+		System.out.println("Invalid, Your coordinate is of invalid size!");
+	}
+}
+
+
 /**
  * checking if another board is equal
  * @param {Object} obj - the other object to test equality with
@@ -258,7 +347,24 @@ public boolean equals(Object obj) {
 		return false;
 	if (getClass() != obj.getClass())
 		return false;
-	return false;
+	for(int row = 0; row < gameStatus.length; row++) {
+		for(int cell = 0; cell < gameStatus.length; cell++) {
+			if(gameStatus[row][cell] != obj.gamestatus[row][cell]) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+/**
+ * copy constructor, without privacy leak.
+ @param {Board} bd - the board used to create a new board with deep copies of gameStatus and getGameOutput
+ @see gameStatus
+ @see gameOutput
+ */
+public Board(Board bd){
+	setGameOutput(bd.getGameOutput());
+	setGameStatus(bd.getGameStatus());
 }
 
 }
